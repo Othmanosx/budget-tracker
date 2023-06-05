@@ -8,14 +8,18 @@ import Plan from "~/components/Plan/Plan";
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
+  const utils = api.useContext();
   const { data: sessionData } = useSession();
   const { data, isLoading } = api.example.getExpenses.useQuery(undefined, {
     enabled: sessionData?.user !== undefined,
   });
 
   const isLoggedOut = !sessionData?.user;
-  const { mutate, isLoading: isMutating } =
-    api.example.addExpense.useMutation();
+  const { mutate, isLoading: isMutating } = api.example.addExpense.useMutation({
+    async onSettled() {
+      await utils.example.getExpenses.invalidate();
+    },
+  });
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
