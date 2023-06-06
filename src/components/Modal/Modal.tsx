@@ -3,9 +3,11 @@ import Input from "../Input/Input";
 import { useModalStore, useNewExpenseStore } from "store";
 import Button from "../Button/Button";
 import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 const Modal = () => {
   const utils = api.useContext();
+  const { data } = useSession();
   const setOpen = useModalStore((state) => state.setOpen);
   const name = useNewExpenseStore((state) => state.name);
   const setName = useNewExpenseStore((state) => state.setName);
@@ -20,6 +22,10 @@ const Modal = () => {
     });
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
+    if (!data?.user) {
+      alert("Please login first");
+      return;
+    }
     e.preventDefault();
     mutateAsync({ name, cost })
       .then(() => {
