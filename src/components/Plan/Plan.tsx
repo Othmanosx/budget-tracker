@@ -43,7 +43,7 @@ const Plan = () => {
   );
 
   const remaining = Number(data?.budget ?? 0) - Number(totalExpenses);
-
+  const shouldAlert = expenses && expenses.length > 0 && remaining <= 0;
   return (
     <div>
       <div className="flex flex-wrap justify-center gap-3 align-middle">
@@ -76,7 +76,7 @@ const Plan = () => {
           </h2>
         </div>
       </div>
-      {remaining <= 0 && <Alert title="You have spent all of your budget!" />}
+      {shouldAlert && <Alert title="You have spent all of your budget!" />}
     </div>
   );
 };

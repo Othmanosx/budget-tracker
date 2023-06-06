@@ -1,8 +1,10 @@
 import React from "react";
+import { useModalStore } from "store";
 
 const BottomNav = () => {
+  const setOpen = useModalStore((state) => state.setOpen);
   return (
-    <div className="fixed bottom-4 left-1/2 z-50 h-16 w-full max-w-lg -translate-x-1/2 rounded-full border border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700">
+    <div className="fixed bottom-4 left-1/2 z-40 h-16 w-full max-w-lg -translate-x-1/2 rounded-full border border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700">
       <div className="mx-auto grid h-full max-w-lg grid-cols-3">
         <button
           title="Home"
@@ -23,6 +25,7 @@ const BottomNav = () => {
 
         <div className="flex items-center justify-center">
           <button
+            onClick={() => setOpen(true)}
             title="Add new item"
             type="button"
             className="group inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-medium hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"

@@ -17,7 +17,7 @@ const ExpenseItem = ({ id, name, cost }: Props) => {
     },
   });
   return (
-    <div className="flex w-full flex-col justify-between rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-600 dark:bg-gray-700 md:flex-row">
+    <div className="relative flex w-full flex-col justify-between rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-600 dark:bg-gray-700 md:flex-row">
       <div className="mb-3 mr-4 flex flex-col items-start md:mb-0 md:flex-row md:items-center">
         <p className="flex items-center text-sm font-normal text-gray-500 dark:text-white">
           {name}
@@ -25,7 +25,7 @@ const ExpenseItem = ({ id, name, cost }: Props) => {
       </div>
       <div className="mb-3 mr-4 ms-auto flex flex-col items-start md:mb-0 md:flex-row md:items-center">
         <p className="flex items-center rounded-full bg-blue-700 p-1 px-2 text-sm font-normal text-white">
-          {cost}$
+          {Number(cost)}$
         </p>
       </div>
       <div className="flex flex-shrink-0 items-center">
