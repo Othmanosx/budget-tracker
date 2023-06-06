@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { FormEvent, useMemo } from "react";
 import Button from "../Button";
 import Input from "../Input";
 import { api } from "~/utils/api";
@@ -27,7 +27,8 @@ const Plan = () => {
       },
     });
 
-  const submitBudget = () => {
+  const submitBudget = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (editBudget) {
       mutateAsync({ budget })
         .then(() => setEditBudget(false))
@@ -51,9 +52,20 @@ const Plan = () => {
   return (
     <div>
       <div className="flex flex-wrap justify-center gap-3 align-middle">
-        <div className="flex justify-between gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-600 dark:bg-gray-700">
+        <form
+          onSubmit={submitBudget}
+          className="flex justify-between gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-600 dark:bg-gray-700"
+        >
           {editBudget ? (
-            <Input value={budget} onChange={setBudget} />
+            <Input
+              value={budget}
+              onChange={setBudget}
+              type="number"
+              name="budget"
+              id="budget"
+              placeholder="0"
+              required
+            />
           ) : (
             <h2 className="flex items-center font-normal text-gray-500 dark:text-white">
               <b>Budget: </b>
@@ -61,15 +73,15 @@ const Plan = () => {
             </h2>
           )}
           <Button
+            type="submit"
             title={
               isUpdatingBudget ? "Loading..." : editBudget ? "Submit" : "Edit"
             }
-            onClick={submitBudget}
           />
           {editBudget && (
             <Button title={"Cancel"} onClick={() => setEditBudget(false)} />
           )}
-        </div>
+        </form>
         <div className="flex justify-between gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-600 dark:bg-gray-700">
           <h2 className="flex items-center font-normal text-gray-500 dark:text-white">
             <b>Remaining: </b>
