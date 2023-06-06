@@ -41,7 +41,8 @@ const Plan = () => {
     (current, next) => current + Number(next.cost),
     0
   );
-  const remaining = Number(data?.budget) - Number(totalExpenses);
+
+  const remaining = Number(data?.budget ?? 0) - Number(totalExpenses);
 
   return (
     <div>
