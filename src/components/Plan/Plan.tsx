@@ -34,6 +34,7 @@ const Plan = () => {
         .catch(console.log);
     } else {
       setEditBudget(!editBudget);
+      setBudget(String(data?.budget));
     }
   };
 
@@ -65,6 +66,9 @@ const Plan = () => {
             }
             onClick={submitBudget}
           />
+          {editBudget && (
+            <Button title={"Cancel"} onClick={() => setEditBudget(false)} />
+          )}
         </div>
         <div className="flex justify-between gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-600 dark:bg-gray-700">
           <h2 className="flex items-center font-normal text-gray-500 dark:text-white">

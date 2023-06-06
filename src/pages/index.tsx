@@ -43,7 +43,7 @@ const Home: NextPage = () => {
               You can add new items by tapping the plus icon below
             </div>
           ) : (
-            <div className="flex w-full flex-col gap-2 pb-8">
+            <div className="flex w-full max-w-xl flex-col gap-2 pb-8">
               {data?.map((item) => (
                 <ExpenseItem key={item.id} {...item} />
               ))}
