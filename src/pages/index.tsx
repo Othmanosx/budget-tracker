@@ -24,7 +24,7 @@ const Home: NextPage = () => {
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    mutate({ name: "Phone", cost: "900" });
+    mutate({ name: "TV", cost: "300" });
   };
   return (
     <>
@@ -56,7 +56,11 @@ const Home: NextPage = () => {
               You can add new items by tapping the plus icon below
             </div>
           ) : (
-            data?.map((item) => <ExpenseItem key={item.id} {...item} />)
+            <div className="flex w-full flex-col gap-2 pb-8">
+              {data?.map((item) => (
+                <ExpenseItem key={item.id} {...item} />
+              ))}
+            </div>
           )}
         </>
       </HomeLayout>
