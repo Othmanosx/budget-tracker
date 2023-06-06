@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Button from "../Button";
 import Input from "../Input";
 import { api } from "~/utils/api";
@@ -42,7 +42,10 @@ const Plan = () => {
     0
   );
 
-  const remaining = Number(data?.budget ?? 0) - Number(totalExpenses);
+  const remaining = useMemo(
+    () => Number(data?.budget ?? 0) - Number(totalExpenses),
+    [data?.budget, totalExpenses]
+  );
   const shouldAlert = expenses && expenses.length > 0 && remaining <= 0;
   return (
     <div>

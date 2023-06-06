@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { useModalStore } from "store";
 
@@ -6,9 +7,9 @@ const BottomNav = () => {
   return (
     <div className="fixed bottom-4 left-1/2 z-40 h-16 w-full max-w-lg -translate-x-1/2 rounded-full border border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700">
       <div className="mx-auto grid h-full max-w-lg grid-cols-3">
-        <button
+        <Link
+          href={"/"}
           title="Home"
-          type="button"
           className="group inline-flex flex-col items-center justify-center rounded-l-full px-5 hover:bg-gray-50 dark:hover:bg-gray-800"
         >
           <svg
@@ -21,7 +22,7 @@ const BottomNav = () => {
             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
           </svg>
           <span className="sr-only">Home</span>
-        </button>
+        </Link>
 
         <div className="flex items-center justify-center">
           <button
@@ -47,7 +48,8 @@ const BottomNav = () => {
           </button>
         </div>
 
-        <button
+        <Link
+          href="/profile"
           title="Profile"
           type="button"
           className="group inline-flex flex-col items-center justify-center rounded-r-full px-5 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -66,7 +68,7 @@ const BottomNav = () => {
             ></path>
           </svg>
           <span className="sr-only">Profile</span>
-        </button>
+        </Link>
       </div>
     </div>
   );
