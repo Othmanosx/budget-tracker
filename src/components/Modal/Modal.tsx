@@ -4,8 +4,10 @@ import { useModalStore, useNewExpenseStore } from "store";
 import Button from "../Button/Button";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
+import { useSnackbar } from "notistack";
 
 const Modal = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const utils = api.useContext();
   const { data } = useSession();
   const setOpen = useModalStore((state) => state.setOpen);
@@ -14,12 +16,27 @@ const Modal = () => {
   const cost = useNewExpenseStore((state) => state.cost);
   const setCost = useNewExpenseStore((state) => state.setCost);
 
-  const { mutateAsync, isLoading: isMutating } =
-    api.example.addExpense.useMutation({
-      async onSettled() {
-        await utils.example.getExpenses.invalidate();
-      },
-    });
+  const { mutate, isLoading: isMutating } = api.example.addExpense.useMutation({
+    async onSettled() {
+      await utils.example.getExpenses.invalidate();
+    },
+    onSuccess() {
+      setName("");
+      setCost("");
+      setOpen(false);
+      enqueueSnackbar({
+        message: "Expense added successfully!",
+        variant: "success",
+      });
+    },
+    onError(e) {
+      enqueueSnackbar({
+        message: "Couldn't add expense!",
+        variant: "error",
+      });
+      console.log(e);
+    },
+  });
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     if (!data?.user) {
@@ -27,13 +44,7 @@ const Modal = () => {
       return;
     }
     e.preventDefault();
-    mutateAsync({ name, cost })
-      .then(() => {
-        setName("");
-        setCost("");
-        setOpen(false);
-      })
-      .catch(console.log);
+    mutate({ name, cost });
   };
   return (
     <div>

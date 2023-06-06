@@ -1,14 +1,15 @@
-import React, { FormEvent, useMemo } from "react";
+import React, { type FormEvent, useMemo } from "react";
 import Button from "../Button";
 import Input from "../Input";
 import { api } from "~/utils/api";
 import { useGlobalStore } from "store";
 import Spinner from "../Spinner";
 import Alert from "../Alert/Alert";
+import { useSnackbar } from "notistack";
 
 const Plan = () => {
   const utils = api.useContext();
-
+  const { enqueueSnackbar } = useSnackbar();
   // edit budget toggle
   const editBudget = useGlobalStore((state) => state.editBudget);
   const setEditBudget = useGlobalStore((state) => state.setEditBudget);
@@ -20,19 +21,31 @@ const Plan = () => {
   const { data, isLoading } = api.example.getPlan.useQuery();
   const { data: expenses, isLoading: isLoadingExpenses } =
     api.example.getExpenses.useQuery();
-  const { mutateAsync, isLoading: isUpdatingBudget } =
+  const { mutate, isLoading: isUpdatingBudget } =
     api.example.editPlan.useMutation({
       async onSettled() {
         await utils.example.getPlan.invalidate();
+        setEditBudget(false);
+      },
+      onSuccess() {
+        enqueueSnackbar({
+          message: "Expense updated successfully!",
+          variant: "success",
+        });
+      },
+      onError(e) {
+        enqueueSnackbar({
+          message: "Couldn't update the budget!",
+          variant: "error",
+        });
+        console.log(e);
       },
     });
 
   const submitBudget = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (editBudget) {
-      mutateAsync({ budget })
-        .then(() => setEditBudget(false))
-        .catch(console.log);
+      mutate({ budget });
     } else {
       setEditBudget(!editBudget);
       setBudget(String(data?.budget));

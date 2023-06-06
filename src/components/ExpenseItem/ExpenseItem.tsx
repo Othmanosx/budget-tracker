@@ -1,6 +1,7 @@
 import React from "react";
 import { api } from "~/utils/api";
 import Spinner from "../Spinner/Spinner";
+import { useSnackbar } from "notistack";
 
 type Props = {
   id: string;
@@ -10,10 +11,24 @@ type Props = {
 
 const ExpenseItem = ({ id, name, cost }: Props) => {
   const utils = api.useContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { mutate, isLoading } = api.example.deleteExpense.useMutation({
     async onSettled() {
       await utils.example.getExpenses.invalidate();
+    },
+    onSuccess() {
+      enqueueSnackbar({
+        message: "Expense deleted successfully!",
+        variant: "success",
+      });
+    },
+    onError(e) {
+      enqueueSnackbar({
+        message: "Couldn't delete expense item!",
+        variant: "error",
+      });
+      console.log(e);
     },
   });
   return (
